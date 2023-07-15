@@ -95,15 +95,15 @@ class GuruFaceView extends WatchUi.WatchFace {
     private function generateSecondHandCoordinates(centerPoint as Array<Float>) as Array< Array<Float> > {
         var clockTime = System.getClockTime();
         var secondHand = (clockTime.sec / 60.0) * Math.PI * 2.0;
-        return generateHandCoordinates(centerPoint, secondHand, 80, 15, 0);
+        return generateHandCoordinates(centerPoint, secondHand, 78, 12, 0);
     }
 
     private function drawHashMarks(dc as Dc) as Void {
         dc.setPenWidth(1);
         var width = dc.getWidth();
         var outerRad = width / 2.0;
-        var innerRad1 = outerRad - 14.0;
-        var innerRad2 = outerRad - 6.0;
+        var innerRad1 = outerRad - 16.0;
+        var innerRad2 = outerRad - 8.0;
         var innerRad;
         var inc = Math.PI / 30.0;
         for (var i=0, ang=0.0; i<60; i++) {
@@ -163,10 +163,10 @@ class GuruFaceView extends WatchUi.WatchFace {
         var hourHandAngle = (((clockTime.hour % 12) * 60.0) + clockTime.min);
         hourHandAngle = hourHandAngle / (12.0 * 60.0);
         hourHandAngle = hourHandAngle * Math.PI * 2.0;
-        targetDc.fillPolygon(generateHandCoordinates(_screenCenterPoint, hourHandAngle, 50, 0, 4));
+        targetDc.fillPolygon(generateHandCoordinates(_screenCenterPoint, hourHandAngle, 48, 0, 4));
 
         var minuteHandAngle = (clockTime.min / 60.0) * Math.PI * 2.0;
-        targetDc.fillPolygon(generateHandCoordinates(_screenCenterPoint, minuteHandAngle, 70, 0, 2));
+        targetDc.fillPolygon(generateHandCoordinates(_screenCenterPoint, minuteHandAngle, 68, 0, 2));
 
         targetDc.fillCircle(width / 2.0, height / 2.0, 5);
 
