@@ -27,6 +27,7 @@ class GuruFaceView extends WatchUi.WatchFace {
     private var _showInverted as Boolean;
     private var _foregroundColor;
     private var _backgroundColor;
+    public var _second_hand_tail;
 
     public function initialize() {
         WatchFace.initialize();
@@ -60,6 +61,7 @@ class GuruFaceView extends WatchUi.WatchFace {
             _backgroundColor = Graphics.COLOR_WHITE;
         }
         _isAwake = true;
+        _second_hand_tail = 14;
     }
 
     public function onLayout(dc as Dc) as Void {
@@ -97,7 +99,7 @@ class GuruFaceView extends WatchUi.WatchFace {
     private function generateSecondHandCoordinates(centerPoint as Array<Float>) as Array< Array<Float> > {
         var clockTime = System.getClockTime();
         var secondHand = (clockTime.sec / 60.0) * Math.PI * 2.0;
-        return generateHandCoordinates(centerPoint, secondHand, 78, 14, 0);
+        return generateHandCoordinates(centerPoint, secondHand, 78, _second_hand_tail, 0);
     }
 
     // takes 3000 us in simulator
@@ -254,8 +256,7 @@ class GuruFaceDelegate extends WatchUi.WatchFaceDelegate {
     }
 
     public function onPowerBudgetExceeded(powerInfo as WatchFacePowerInfo) as Void {
-        System.println("Average execution time: " + powerInfo.executionTimeAverage);
-        System.println("Allowed execution time: " + powerInfo.executionTimeLimit);
         _view.turnPartialUpdatesOff();
+        _view._second_hand_tail = - _view._second_hand_tail;
     }
 }
