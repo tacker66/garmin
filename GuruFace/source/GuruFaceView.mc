@@ -76,6 +76,7 @@ class GuruFaceView extends WatchUi.WatchFace {
         _screenCenterPoint = [dc.getWidth() / 2.0, dc.getHeight() / 2.0] as Array<Float>;
     }
 
+    // takes 350 us in simulator
     private function generateHandCoordinates(centerPoint as Array<Float>, angle as Float, handLength as Number, tailLength as Number, width as Number) as Array<Array<Float>> {
         var w = width.toFloat();
         var t = tailLength.toFloat();
@@ -92,12 +93,14 @@ class GuruFaceView extends WatchUi.WatchFace {
         return result;
     }
 
+    // takes 400 us in simulator
     private function generateSecondHandCoordinates(centerPoint as Array<Float>) as Array< Array<Float> > {
         var clockTime = System.getClockTime();
         var secondHand = (clockTime.sec / 60.0) * Math.PI * 2.0;
         return generateHandCoordinates(centerPoint, secondHand, 78, 14, 0);
     }
 
+    // takes 3000 us in simulator
     private function drawHashMarks(dc as Dc) as Void {
         dc.setPenWidth(1);
         var width = dc.getWidth();
@@ -123,6 +126,7 @@ class GuruFaceView extends WatchUi.WatchFace {
         }
     }
 
+    // takes 6000 us in simulator
     public function onUpdate(dc as Dc) as Void {
         var clockTime = System.getClockTime();
         var targetDc = null;
@@ -184,6 +188,7 @@ class GuruFaceView extends WatchUi.WatchFace {
     }
 
     // looks like this is done only every other second ...
+    // takes 800 us in simulator
     public function onPartialUpdate(dc as Dc) as Void {
         if(!_showSeconds) {
             return;
