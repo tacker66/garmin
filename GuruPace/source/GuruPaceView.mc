@@ -12,7 +12,7 @@ import Toybox.WatchUi;
 
 class GuruPaceField extends WatchUi.DataField {
 
-    hidden var value="0:00.0";
+    hidden var value="0:00-0";
 
     public function initialize() {
         DataField.initialize();
@@ -23,7 +23,12 @@ class GuruPaceField extends WatchUi.DataField {
             var speed = 1000.0 / (60.0 * info.averageSpeed);
             var pace_min = speed.toNumber();
             var pace_sec = (speed - pace_min) * 60.0;
-            value = pace_min.format("%d") + ":" + pace_sec.format("%02.1f");
+            var pace_sec_rnd = Math.round(pace_sec);
+            pace_sec_rnd = pace_sec_rnd.toLong();
+            var pace_sec_flr = Math.floor(pace_sec);
+            var pace_sec_tnth_to_go = Math.round((pace_sec - pace_sec_flr) * 10);
+            pace_sec_tnth_to_go = (pace_sec_tnth_to_go.toLong() + 5) % 10;
+            value = pace_min.format("%d") + ":" + pace_sec_rnd.format("%02d") + "-" + pace_sec_tnth_to_go.format("%d");
         }
         return value;
     }
