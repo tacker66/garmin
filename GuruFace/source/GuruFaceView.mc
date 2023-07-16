@@ -46,7 +46,7 @@ class GuruFaceView extends WatchUi.WatchFace {
         }
         setting = Storage.getValue(4);
         if(setting == null) {
-            Storage.setValue(4, false);
+            Storage.setValue(4, true);
         }
         _showSeconds  = Storage.getValue(1);
         _showBattery  = Storage.getValue(2);
