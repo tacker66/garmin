@@ -95,7 +95,7 @@ class GuruFaceView extends WatchUi.WatchFace {
     private function generateSecondHandCoordinates(centerPoint as Array<Float>) as Array< Array<Float> > {
         var clockTime = System.getClockTime();
         var secondHand = (clockTime.sec / 60.0) * Math.PI * 2.0;
-        return generateHandCoordinates(centerPoint, secondHand, 78, 12, 0);
+        return generateHandCoordinates(centerPoint, secondHand, 78, 14, 0);
     }
 
     private function drawHashMarks(dc as Dc) as Void {
