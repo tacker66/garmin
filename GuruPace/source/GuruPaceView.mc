@@ -24,9 +24,12 @@ class GuruPaceField extends WatchUi.DataField {
             var pace_min = speed.toNumber();
             var pace_sec = (speed - pace_min) * 60.0;
             var pace_sec_rnd = Math.round(pace_sec);
+            var pace_sec_tnth_to_go = Math.round((pace_sec - pace_sec_rnd) * 10);
             pace_sec_rnd = pace_sec_rnd.toLong();
-            var pace_sec_flr = Math.floor(pace_sec);
-            var pace_sec_tnth_to_go = Math.round((pace_sec - pace_sec_flr) * 10);
+            if(pace_sec_rnd == 60) {
+                pace_sec_rnd = 0;
+                pace_min++;
+            }
             pace_sec_tnth_to_go = (pace_sec_tnth_to_go.toLong() + 5) % 10;
             value = pace_min.format("%d") + ":" + pace_sec_rnd.format("%02d") + "-" + pace_sec_tnth_to_go.format("%d");
         }
