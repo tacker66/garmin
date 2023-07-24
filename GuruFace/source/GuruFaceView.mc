@@ -16,11 +16,9 @@ import Toybox.Application.Storage;
 class GuruFaceView extends WatchUi.WatchFace {
 
     private var _font as FontResource?;
-    private var _isAwake as Boolean?;
     private var _offscreenBuffer as BufferedBitmap?;
     private var _screenCenterPoint as Array<Float>?;
     private var _fullScreenRefresh as Boolean;
-    private var _partialUpdatesAllowed as Boolean;
     private var _showSeconds as Boolean;
     private var _showBattery as Boolean;
     private var _showDate as Boolean;
@@ -32,10 +30,9 @@ class GuruFaceView extends WatchUi.WatchFace {
     public function initialize() {
         WatchFace.initialize();
         _fullScreenRefresh = true;
-        _partialUpdatesAllowed = (WatchUi.WatchFace has :onPartialUpdate);
         var setting = Storage.getValue(1);
         if(setting == null) {
-            Storage.setValue(1, true);
+            Storage.setValue(1, false);
         }
         setting = Storage.getValue(2);
         if(setting == null) {
@@ -60,7 +57,6 @@ class GuruFaceView extends WatchUi.WatchFace {
             _foregroundColor = Graphics.COLOR_BLACK;
             _backgroundColor = Graphics.COLOR_WHITE;
         }
-        _isAwake = true;
         _second_hand_tail = 14;
     }
 
@@ -180,17 +176,13 @@ class GuruFaceView extends WatchUi.WatchFace {
 
         dc.setColor(_foregroundColor, Graphics.COLOR_TRANSPARENT);
 
-        if (_partialUpdatesAllowed) {
-            onPartialUpdate(dc);
-        } else if (_showSeconds && _isAwake) {
-            dc.fillPolygon(generateSecondHandCoordinates(_screenCenterPoint));
-        }
+        onPartialUpdate(dc);
         
         _fullScreenRefresh = false;
     }
 
-    // looks like this is done only every other second ...
     // takes 800 us in simulator
+    // this is only called once every second while not in sleep mode
     public function onPartialUpdate(dc as Dc) as Void {
         if(!_showSeconds) {
             return;
@@ -233,16 +225,9 @@ class GuruFaceView extends WatchUi.WatchFace {
     }
 
     public function onEnterSleep() as Void {
-        _isAwake = false;
-        WatchUi.requestUpdate();
     }
 
     public function onExitSleep() as Void {
-        _isAwake = true;
-    }
-
-    public function turnPartialUpdatesOff() as Void {
-        _partialUpdatesAllowed = false;
     }
 }
 
@@ -256,7 +241,6 @@ class GuruFaceDelegate extends WatchUi.WatchFaceDelegate {
     }
 
     public function onPowerBudgetExceeded(powerInfo as WatchFacePowerInfo) as Void {
-        _view.turnPartialUpdatesOff();
         _view._second_hand_tail = - _view._second_hand_tail;
     }
 }
